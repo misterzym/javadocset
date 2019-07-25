@@ -27,7 +27,7 @@ func main() {
 		printUsage()
 		return
 	} else if (argLength != 3) {
-		log.Error("Invalid argument(s) provided")
+		log.Error("Неверные аргументы запуска :(")
 		printUsage()
 		os.Exit(1)
 	}
@@ -35,16 +35,16 @@ func main() {
 	docsetName := path.Clean(arguments[1])
 	var javadocPath = path.Clean(arguments[2])
 
-	log.Info("Running with arguments", "docsetName", docsetName, "javadocPath", javadocPath)
+	log.Info("Запущено с аргументами: ", "docsetName", docsetName, "javadocPath", javadocPath)
 
 	docsetDirectoryPath := docsetName + ".docset"
 
 	if exists, _ := pathExists(docsetDirectoryPath); exists {
-		log.Info("Removing existing docset directory", "Docset directory path", docsetDirectoryPath)
+		log.Info("Удаление существующей директории", "Docset directory path", docsetDirectoryPath)
 		if err := os.RemoveAll(docsetDirectoryPath); err != nil {
 			log.Error(
-				"Unable to remove existing docset directory",
-				"Docset directory path", docsetDirectoryPath,
+				"Невозможно удалить директорию",
+				"Docset адрес", docsetDirectoryPath,
 				"error", err,
 			)
 			os.Exit(1)
@@ -55,9 +55,9 @@ func main() {
 	resourcesDirectoryPath := contentsDirectoryPath + "/Resources"
 	documentsDirectoryPath := resourcesDirectoryPath + "/Documents"
 
-	log.Info("Creating docset folder structure...")
+	log.Info("Создание структуры папок docset...")
 	if err := os.MkdirAll(documentsDirectoryPath, os.ModePerm); err != nil {
-		log.Error("Unable to create docset folder structure", "Docset directory", docsetDirectoryPath)
+		log.Error("Невозможно создать структуру папок", "Docset directory", docsetDirectoryPath)
 		os.Exit(1)
 	}
 
@@ -71,7 +71,7 @@ func main() {
 		filepath.Walk(javadocPath, func(filePath string, info os.FileInfo, err error) error {
 
 			if err != nil {
-				log.Error("Failed to walk path", "path", filePath, "err", err)
+				log.Error("Ошибка адрса папки документации", "path", filePath, "err", err)
 				os.Exit(1)
 			}
 
@@ -86,7 +86,7 @@ func main() {
 
 				return nil
 			} else {
-				return errors.New("Hit file enumeration limit")
+				return errors.New("Ошибка нумерации файлов")
 			}
 		})
 	} else {
@@ -124,7 +124,7 @@ func main() {
 		filepath.Walk(indexFilesPath, func(filePath string, info os.FileInfo, err error) error {
 
 			if err != nil {
-				log.Error("Failed to walk path", "filePath", filePath, "err", err)
+				log.Error("Ошибка нумерации файлов", "filePath", filePath, "err", err)
 				os.Exit(1)
 			}
 
@@ -149,13 +149,13 @@ func main() {
 }
 
 func printUsage() {
-	log.Info("Usage: javadocset <docset name> <javadoc API folder>")
-	log.Info("<docset name> - anything you want")
-	log.Info("<javadoc API folder> - the path of the javadoc API folder you want to index")
+	log.Info("Используйте: jdocset <docset name> <javadoc folder>")
+	log.Info("<docset name> - название docset в дальнейшем")
+	log.Info("<javadoc folder> - путь к папке с javadoc")
 }
 
 func copyFiles(documentsDirectoryPath, javadocPath string) {
-	log.Info("Copying files...", "source", javadocPath, "destination", documentsDirectoryPath)
+	log.Info("Копирование файлов...", "source", javadocPath, "destination", documentsDirectoryPath)
 
 	src := path.Clean(javadocPath)
 	dst := path.Clean(documentsDirectoryPath)
@@ -164,7 +164,7 @@ func copyFiles(documentsDirectoryPath, javadocPath string) {
 	filepath.Walk(src, func(filePath string, info os.FileInfo, err error) error {
 
 		if err != nil {
-			log.Error("Error walking path", "filePath", filePath)
+			log.Error("Ошибка директории", "filePath", filePath)
 			os.Exit(1)
 		}
 
@@ -179,7 +179,7 @@ func copyFiles(documentsDirectoryPath, javadocPath string) {
 				err := os.MkdirAll(dst + directoryName, os.ModePerm)
 
 				if err != nil {
-					log.Error("Unable to create directory", "directory", directoryName)
+					log.Error("Невозможно создать директорию", "directory", directoryName)
 					os.Exit(1)
 				}
 			}
@@ -195,7 +195,7 @@ func copyFiles(documentsDirectoryPath, javadocPath string) {
 			err = copyFileContents(filePath, dstPath)
 
 			if err != nil {
-				log.Error("Unable to copy file", "src", filePath, "dst", dstPath)
+				log.Error("Невозможно создать папку", "src", filePath, "dst", dstPath)
 				os.Exit(1)
 			}
 		}
@@ -222,7 +222,7 @@ func writeInfoPlist(docsetName, docsetIndexFile, contentsDirectoryPath string) {
 	infoPlistPath := contentsDirectoryPath + "/Info.plist"
 	err := writeStringToFile(plistContent, infoPlistPath)
 	if err != nil {
-		log.Error("Unable to write to plist file", "plistPath", infoPlistPath)
+		log.Error("Невозможно создать plist файл", "plistPath", infoPlistPath)
 	}
 }
 
@@ -236,14 +236,14 @@ func initDB(resourcesDirectoryPath string, dbFunc func(*sql.DB)) {
 	db, err := sql.Open("sqlite3", dbPath)
 
 	if err != nil {
-		log.Error("Unable to create sqlite database", "destination", dbPath, "error", err)
+		log.Error("Невозможно создать sqllite3 базу данных", "destination", dbPath, "error", err)
 		os.Exit(1)
 	}
 	defer db.Close()
 
 	_, err = db.Exec("CREATE TABLE searchIndex(id INTEGER PRIMARY KEY, name TEXT, type TEXT, path TEXT)")
 	if err != nil {
-		log.Error("Unable to create table", "error", err)
+		log.Error("Невозможно создать таблицу в базе данных", "error", err)
 		os.Exit(1)
 	}
 
@@ -259,13 +259,13 @@ func index(indicesToIndex []string) func(db *sql.DB) {
 
 		tx, err := db.Begin()
 		if err != nil {
-			log.Error("Unable to begin transactions for database", "error", err)
+			log.Error("НЕ происходит транзакция в базе данных", "error", err)
 			os.Exit(1)
 		}
 
 		stmt, err := tx.Prepare("INSERT INTO searchIndex(name, type, path) VALUES (?, ?, ?)")
 		if err != nil {
-			log.Error("Unable to create statement to insert into database", "error", err)
+			log.Error("Нельзя создать экземпляр базы данных", "error", err)
 			os.Exit(1)
 		}
 		defer stmt.Close()
@@ -283,7 +283,7 @@ func index(indicesToIndex []string) func(db *sql.DB) {
 					_, err := stmt.Exec(name, elementType, path)
 					if err != nil {
 						log.Error(
-							"Unable to insert entry",
+							"Невозможно вставить строку",
 							"name", name,
 							"elementType", elementType,
 							"path", path,
@@ -344,7 +344,7 @@ func copyFileContents(src, dst string) (err error) {
 		}
 	}()
 	if _, err = io.Copy(out, in); err != nil {
-		log.Error("Error copying", "error", err)
+		log.Error("Ошибка копирования", "error", err)
 		return
 	}
 	err = out.Sync()
