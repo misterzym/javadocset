@@ -162,7 +162,7 @@ func copyFiles(documentsDirectoryPath, javadocPath string) {
 	dst := path.Clean(documentsDirectoryPath)
 	
 	cpCmd := exec.Command("cp", "-rf", src, dst)
-	wtf := cpCmd.Run()
+	cpCmd.Run()
 
 	srcBase := path.Base(src)
 	filepath.Walk(src, func(filePath string, info os.FileInfo, err error) error {
