@@ -2,6 +2,7 @@ package main
 
 import (
 	"os"
+	"os/exec"
 	"path"
 	"github.com/inconshreveable/log15"
 	"path/filepath"
@@ -159,6 +160,9 @@ func copyFiles(documentsDirectoryPath, javadocPath string) {
 
 	src := path.Clean(javadocPath)
 	dst := path.Clean(documentsDirectoryPath)
+	
+	cpCmd := exec.Command("cp", "-rf", src, dst)
+	err := cpCmd.Run()
 
 	srcBase := path.Base(src)
 	filepath.Walk(src, func(filePath string, info os.FileInfo, err error) error {
