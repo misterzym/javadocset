@@ -46,20 +46,20 @@ var ELEMENT_TYPE_TO_TYPE_EVALUATORS = map[ElementType][]TypeEvaluator{
 
 func parseIndex(indexFilePath string, entryHandler func(IndexEntry)) {
 
-	log.Info("Indexing from file", "file", indexFilePath)
+	log.Info("Индексация файла", "file", indexFilePath)
 
 	indexed := 0
 	file, err := os.OpenFile(indexFilePath, os.O_RDONLY, 0666)
 
 	if err != nil {
-		log.Error("Unable to open file", "file", indexFilePath, "error", err)
+		log.Error("Нельзя открыть файл", "file", indexFilePath, "error", err)
 		return
 	}
 
 	root, err := html.Parse(file)
 
 	if err != nil {
-		log.Error("Unable to parse index", "file", file, "error", err)
+		log.Error("Нельзя создать индекс файла", "file", file, "error", err)
 		return
 	}
 
@@ -123,7 +123,7 @@ func parseIndex(indexFilePath string, entryHandler func(IndexEntry)) {
 		}
 
 		if tagType == NotFound {
-			log.Warn("Warning: could not determine type", "text", text, "dtClassName", dtClassName)
+			log.Warn("Предупреждение: неизвестный тип", "text", text, "dtClassName", dtClassName)
 			continue
 		}
 
@@ -135,7 +135,7 @@ func parseIndex(indexFilePath string, entryHandler func(IndexEntry)) {
 		indexed++
 	}
 
-	log.Info("Indexed", "count", indexed)
+	log.Info("Проиндексировано", "count", indexed)
 }
 
 func NewTypeEvaluators(a TypeEvaluator, others ...TypeEvaluator) []TypeEvaluator {
