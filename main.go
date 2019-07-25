@@ -162,6 +162,7 @@ func copyFiles(documentsDirectoryPath, javadocPath string) {
 	dst := path.Clean(documentsDirectoryPath)
 	
 	cpCmd := exec.Command("cp", "-rf", src, dst)
+	log.Info("cp -rf ", src," ",dst);
 	cpCmd.Run()
 
 	srcBase := path.Base(src)
