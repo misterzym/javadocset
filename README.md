@@ -1,4 +1,40 @@
-javadocset
+RU:javadocset
+==========
+Это порт javadocset инструмента. Я портировал этот инструмент в качестве упражнения для использования Golang, а также для содействия пользователям Zealdoc, поскольку большинство пользователей Dash, использующих Mac, могут запускать инструмент Kavli javadocset который можно найти [здесь](https://github.com/Kapeli/javadocset)).
+
+# Инструкции по сборке
+
+## Предпосылки
+Вам необходимо установить Go 1.8.3 и выше, чтобы использовать этот инструмент
+
+## Инструкции
+Это так просто, как:
+```
+go get github.com/inconshreveable/log15
+go get github.com/mattn/go-sqlite3
+go get github.com/misterzym/jdocset
+```
+
+## Использование
+```
+javadocset <имя документа> <папка Javadoc>
+# где:
+# <docset name> = имя документа, которое появится на Dash / Zeal
+# <Папка Javadoc> = папка, содержащая сгенерированный HTML-документ Java
+```
+
+# Основы
+Кредиты поступают в Kapeli: [https://github.com/Kapeli/javadocset](https://github.com/Kapeli/javadocset)
+
+Zeal: [https://github.com/zealdocs/zeal](https://github.com/zealdocs/zeal)
+
+Dash: [https://kapeli.com/dash](https://kapeli.com/dash)
+
+## Заметка
+Нет гарантии, что это будет работать на 100%. Я старался изо всех сил проверить, что у меня есть документ на Java, но могут быть ошибки, которые у меня не было возможности обнаружить. Пожалуйста, откройте вопрос, если у вас возникли проблемы!
+
+
+EN:javadocset
 ==========
 
 This is a port of Kapeli's javadocset tool in Golang. I ported this tool as an exercise for me to use Golang and also to contribute to Zealdoc's users as most Dash users who use a Mac are able to run Kapeli's javadocset tool (which can be found [here](https://github.com/Kapeli/javadocset)).
@@ -11,7 +47,7 @@ You need to have Go 1.8.3 and above installed to be able to use this tool
 ## Instructions
 It's as simple as:
 ```
-go get github.com/william8th/javadocset
+go get github.com/misterzym/jdocset
 ```
 
 ## Usage
