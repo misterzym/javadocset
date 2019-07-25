@@ -250,6 +250,8 @@ func initDB(resourcesDirectoryPath string, dbFunc func(*sql.DB)) {
 	if dbFunc != nil {
 		dbFunc(db)
 	}
+	
+	db.Exec("UPDATE searchIndex SET path = substr(path, 2)");
 }
 
 func index(indicesToIndex []string) func(db *sql.DB) {
